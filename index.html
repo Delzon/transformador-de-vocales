@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vowel Transformer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🔄 Vowel Transformer</h1>
+        
+        <div class="content-wrapper">
+            <div class="input-section">
+                <label for="inputText">Input text:</label>
+                <textarea id="inputText" placeholder="Type or paste your text here..."></textarea>
+            </div>
+            
+            <div class="output-section">
+                <label for="outputText">Transformed text:</label>
+                <button class="copy-button" onclick="copyToClipboard()">📋 Copy</button>
+                <div class="result" id="outputText">The result will appear here...</div>
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-value" id="charCount">0</div>
+                <div class="stat-label">Characters</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="vowelCount">0</div>
+                <div class="stat-label">Vowels</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
