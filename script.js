@@ -9,36 +9,63 @@ const config = {
     copiedButton: "✅ Copied",
     charactersLabel: "Characters",
     vowelsLabel: "Vowels",
-    ignoredWords: ["en", "la", "un", "el", "de", "que", "y", "a", "los", "las", "con", "por", "su", "the", "an", "and", "or", "but", "in", "on", "at", "to", "for", "of", "with", "by"]
+    substitutionProbability: 0.7
 };
 
-// Mapa de vocales con caracteres especiales
-const vowelMap = { 
-    'a': 'ā', 'e': 'ē', 'i': 'ī', 'o': 'ō', 'u': 'ū', 
-    'A': 'Ā', 'E': 'Ē', 'I': 'Ī', 'O': 'Ō', 'U': 'Ū' 
+// Mapa de variantes de vocales con caracteres homoglíficos
+const vowelVariants = {
+    'a': ['ā', 'ă', 'â', 'ã', 'ä', 'å'],
+    'e': ['ē', 'ĕ', 'ê', 'ẽ', 'ë', 'ė'],
+    'i': ['ī', 'ĭ', 'î', 'ĩ', 'ï', 'í'],
+    'o': ['ō', 'ŏ', 'ô', 'õ', 'ö', 'ȯ'],
+    'u': ['ū', 'ŭ', 'û', 'ũ', 'ü', 'ů'],
+    'A': ['Ā', 'Ă', 'Â', 'Ã', 'Ä', 'Å'],
+    'E': ['Ē', 'Ĕ', 'Ê', 'Ẽ', 'Ë', 'Ė'],
+    'I': ['Ī', 'Ĭ', 'Î', 'Ĩ', 'Ï', 'Í'],
+    'O': ['Ō', 'Ŏ', 'Ô', 'Õ', 'Ö', 'Ȯ'],
+    'U': ['Ū', 'Ŭ', 'Û', 'Ũ', 'Ü', 'Ů']
 };
 
-// Función de transformación de vocales
-function transformVowels(text) {
-    const ignoredWords = config.ignoredWords;
-    const words = text.split(/(\s+)/);
+// Devuelve un elemento aleatorio de un array
+function getRandomVariant(variants) {
+    const index = Math.floor(Math.random() * variants.length);
+    return variants[index];
+}
 
-    const transformed = words.map(word => {
-        if (word.trim() === "" || ignoredWords.includes(word.toLowerCase())) {
-            return word;
+// Determina si una vocal debe ser sustituida según la probabilidad configurada
+function shouldSubstitute() {
+    return Math.random() < config.substitutionProbability;
+}
+
+// Función principal de transformación de vocales (per-character)
+function transformText(text) {
+    // Normalizar a NFC para manejar caracteres Unicode pre-combinados
+    const normalized = text.normalize('NFC');
+
+    return normalized.split('').map(char => {
+        const variants = vowelVariants[char];
+        if (variants && shouldSubstitute()) {
+            return getRandomVariant(variants);
         }
-
-        let transformed = false;
-        return word.split('').map(letter => {
-            if (!transformed && "aeiouAEIOU".includes(letter)) {
-                transformed = true;
-                return vowelMap[letter] || letter;
-            }
-            return letter;
-        }).join('');
+        return char;
     }).join('');
+}
 
-    return transformed;
+// Función llamada por el botón Transform (mantiene compatibilidad)
+function transform() {
+    const inputText = document.getElementById('inputText').value;
+    const transformed = transformText(inputText);
+    document.getElementById('outputText').textContent = transformed;
+    updateStats(inputText);
+}
+
+// Función para re-ejecutar la transformación (re-roll)
+function retransform() {
+    const inputText = document.getElementById('inputText').value;
+    if (inputText) {
+        const transformed = transformText(inputText);
+        document.getElementById('outputText').textContent = transformed;
+    }
 }
 
 // Función para actualizar las estadísticas
@@ -52,12 +79,12 @@ function updateStats(text) {
 function copyToClipboard() {
     const outputText = document.getElementById('outputText').textContent;
     const copyButton = document.querySelector('.copy-button');
-    
+
     if (outputText && outputText !== config.resultPlaceholder) {
         navigator.clipboard.writeText(outputText).then(() => {
             copyButton.textContent = config.copiedButton;
             copyButton.classList.add('copied');
-            
+
             setTimeout(() => {
                 copyButton.textContent = config.copyButton;
                 copyButton.classList.remove('copied');
@@ -70,10 +97,10 @@ function copyToClipboard() {
             textArea.select();
             document.execCommand('copy');
             document.body.removeChild(textArea);
-            
+
             copyButton.textContent = config.copiedButton;
             copyButton.classList.add('copied');
-            
+
             setTimeout(() => {
                 copyButton.textContent = config.copyButton;
                 copyButton.classList.remove('copied');
@@ -83,7 +110,7 @@ function copyToClipboard() {
 }
 
 // Inicialización
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Configurar textos en inglés
     document.title = config.title.replace(/🔄\s*/, '');
     document.querySelector('h1').textContent = config.title;
@@ -94,11 +121,11 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('.copy-button').textContent = config.copyButton;
     document.getElementById('charCount').nextElementSibling.textContent = config.charactersLabel;
     document.getElementById('vowelCount').nextElementSibling.textContent = config.vowelsLabel;
-    
+
     // Event listener para el input
     document.getElementById('inputText').addEventListener('input', (e) => {
         const text = e.target.value;
-        const transformed = transformVowels(text);
+        const transformed = transformText(text);
         document.getElementById('outputText').textContent = transformed;
         updateStats(text);
     });
