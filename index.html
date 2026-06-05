@@ -19,10 +19,12 @@
             </div>
 
             <div class="output-section">
-                <label for="outputText">Transformed text:</label>
-                <div class="button-group">
-                    <button class="copy-button" onclick="copyToClipboard()">📋 Copy</button>
-                    <button class="reroll-button" onclick="retransform()">🎲 Re-roll</button>
+                <div class="output-label-row">
+                    <label for="outputText">Transformed text:</label>
+                    <div class="button-group">
+                        <button class="copy-button" onclick="copyToClipboard()">📋 Copy</button>
+                        <button class="reroll-button" onclick="retransform()">🎲 Re-roll</button>
+                    </div>
                 </div>
                 <div class="result" id="outputText">The result will appear here...</div>
             </div>

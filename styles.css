@@ -4,35 +4,40 @@
     box-sizing: border-box;
 }
 
+html,
+body {
+    height: 100%;
+    overflow: hidden;
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
-    min-height: 100vh;
+    height: 100vh;
     display: flex;
-    align-items: center;
+    align-items: stretch;
     justify-content: center;
-    padding: 20px;
     color: #ffffff;
 }
 
 .container {
     background: rgba(10, 10, 15, 0.98);
     backdrop-filter: blur(10px);
-    padding: 30px;
-    border-radius: 20px;
+    padding: 16px 20px 14px;
+    border-radius: 0;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
-    max-width: 1200px;
-    width: 95%;
-    height: 90vh;
+    width: 100%;
+    height: 100vh;
     display: flex;
     flex-direction: column;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: none;
 }
 
 h1 {
     text-align: center;
-    margin-bottom: 20px;
-    font-size: 2em;
+    margin-bottom: 10px;
+    font-size: 1.25em;
+    flex-shrink: 0;
     background: linear-gradient(45deg, #667eea, #764ba2);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -41,29 +46,45 @@ h1 {
 }
 
 .content-wrapper {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
     flex: 1;
     min-height: 0;
 }
 
-.input-section, .output-section {
+.input-section,
+.output-section {
     display: flex;
     flex-direction: column;
+    min-height: 0;
+}
+
+.input-section {
+    flex: 1;
+    min-height: 0;
 }
 
 .output-section {
-    position: relative;
+    flex: 1;
+    min-height: 0;
 }
 
 .button-group {
     display: flex;
-    gap: 8px;
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    z-index: 10;
+    gap: 6px;
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+.output-label-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.output-label-row label {
+    margin-bottom: 0;
 }
 
 .copy-button,
@@ -71,10 +92,10 @@ h1 {
     background: rgba(102, 126, 234, 0.8);
     color: white;
     border: none;
-    border-radius: 8px;
-    padding: 8px 12px;
+    border-radius: 6px;
+    padding: 4px 10px;
     cursor: pointer;
-    font-size: 12px;
+    font-size: 11px;
     transition: all 0.3s ease;
 }
 
@@ -103,33 +124,34 @@ h1 {
 
 label {
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     font-weight: 500;
     color: #b8b8c8;
-    font-size: 0.9em;
+    font-size: 0.75em;
     text-transform: uppercase;
     letter-spacing: 1px;
+    flex-shrink: 0;
 }
 
 textarea {
     width: 100%;
     flex: 1;
-    padding: 15px;
+    padding: 10px 12px;
     border: 2px solid rgba(102, 126, 234, 0.2);
-    border-radius: 12px;
-    font-size: 16px;
+    border-radius: 8px;
+    font-size: 14px;
     background: rgba(5, 5, 10, 0.9);
     color: #ffffff;
     transition: all 0.3s ease;
     resize: none;
     font-family: inherit;
+    min-height: 0;
 }
 
 textarea:focus {
     outline: none;
     border-color: #667eea;
     box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
-    transform: translateY(-2px);
 }
 
 textarea::placeholder {
@@ -138,13 +160,14 @@ textarea::placeholder {
 
 .result {
     background: rgba(5, 5, 10, 0.9);
-    padding: 15px;
-    border-radius: 12px;
+    padding: 10px 12px;
+    border-radius: 8px;
     flex: 1;
+    min-height: 0;
     border: 2px solid rgba(102, 126, 234, 0.15);
     color: #ffffff;
-    font-size: 16px;
-    line-height: 1.6;
+    font-size: 14px;
+    line-height: 1.5;
     transition: all 0.3s ease;
     white-space: pre-wrap;
     overflow-y: auto;
@@ -158,11 +181,12 @@ textarea::placeholder {
 .stats {
     display: flex;
     justify-content: center;
-    gap: 40px;
-    margin-top: 20px;
-    padding: 15px;
+    gap: 24px;
+    margin-top: 8px;
+    padding: 8px 12px;
+    flex-shrink: 0;
     background: rgba(5, 5, 10, 0.7);
-    border-radius: 10px;
+    border-radius: 8px;
     border: 1px solid rgba(102, 126, 234, 0.2);
 }
 
@@ -171,28 +195,28 @@ textarea::placeholder {
 }
 
 .stat-value {
-    font-size: 1.5em;
+    font-size: 1.1em;
     font-weight: bold;
     color: #667eea;
 }
 
 .stat-label {
-    font-size: 0.8em;
+    font-size: 0.7em;
     color: #b8b8c8;
-    margin-top: 5px;
+    margin-top: 2px;
 }
 
 @media (max-width: 768px) {
     .container {
-        padding: 20px;
-        height: auto;
+        padding: 14px 16px 12px;
     }
-    
-    .content-wrapper {
-        grid-template-columns: 1fr;
-    }
-    
+
     h1 {
-        font-size: 1.5em;
+        font-size: 1.1em;
+        margin-bottom: 8px;
+    }
+
+    .content-wrapper {
+        gap: 6px;
     }
 }
